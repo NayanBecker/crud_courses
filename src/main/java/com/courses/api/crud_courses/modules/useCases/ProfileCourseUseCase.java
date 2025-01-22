@@ -16,10 +16,12 @@ public class ProfileCourseUseCase {
     private CoursesRepository coursesRepository;
 
     public CoursesResponseDTO execute(UUID idCourse){
+
         var course = this.coursesRepository.findById(idCourse)
-        .orElseThrow(() -> {
-            throw new UserFoundException("Course not found");
-        });
+            .orElseThrow(() -> {
+                throw new UserFoundException("course not found");
+            });
+        
         var courseDTO = CoursesResponseDTO.builder()
             .description(course.getDescription())
             .name(course.getName())
