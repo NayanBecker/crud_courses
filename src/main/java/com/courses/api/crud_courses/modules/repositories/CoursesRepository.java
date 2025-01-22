@@ -9,7 +9,5 @@ import com.courses.api.crud_courses.modules.Entities.CoursesEntity;
 
 public interface CoursesRepository extends JpaRepository<CoursesEntity, UUID> {
     
-    Optional<CoursesEntity> findByName(String name);
-
-    
+    Optional<CoursesEntity> findByName(String name);   
 }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,16 +20,18 @@ public class CoursesEntity {
     @GeneratedValue(strategy=GenerationType.UUID)
     private UUID id;
 
+    @Length(max = 200)
     private String name;
+
     private String category;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    private String description;
 
 
     private LocalDateTime updatedAt;
     private CourseStatus status;
-
 
     public enum CourseStatus {
         ACTIVE,

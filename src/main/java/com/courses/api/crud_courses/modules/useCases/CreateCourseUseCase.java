@@ -16,7 +16,7 @@ public class CreateCourseUseCase {
     public CoursesEntity execute(CoursesEntity coursesEntity){
 
         this.coursesRepository
-            .findById(coursesEntity.getId())
+            .findByName(coursesEntity.getName())
             .ifPresent((user) -> {
                 throw new UserFoundException("Course already exists");
             });
