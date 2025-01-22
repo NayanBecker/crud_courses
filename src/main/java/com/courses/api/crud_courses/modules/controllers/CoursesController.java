@@ -1,20 +1,18 @@
 package com.courses.api.crud_courses.modules.controllers;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.courses.api.crud_courses.modules.Entities.CoursesEntity;
 import com.courses.api.crud_courses.modules.useCases.CreateCourseUseCase;
-import com.courses.api.crud_courses.modules.useCases.ProfileCourseUseCase;
+import com.courses.api.crud_courses.modules.useCases.ListCoursesUseCase;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -25,7 +23,7 @@ public class CoursesController {
     private CreateCourseUseCase createCourseUseCase;
 
     @Autowired
-    private ProfileCourseUseCase profileCourseUseCase;
+    private ListCoursesUseCase listCoursesUseCase;
 
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CoursesEntity coursesEntity) {
@@ -38,12 +36,12 @@ public class CoursesController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<Object> get(HttpServletRequest request) {
-        var idCourse = request.getAttribute("course_id");
+    public ResponseEntity<Object> list(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String category) {
         try {
-            var course = this.profileCourseUseCase
-                    .execute(UUID.fromString(idCourse.toString()));
-            return ResponseEntity.ok().body(course);
+            var courses = this.listCoursesUseCase.execute(name, category);
+            return ResponseEntity.ok(courses);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
