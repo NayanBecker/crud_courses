@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.courses.api.crud_courses.modules.Entities.CoursesEntity;
 import com.courses.api.crud_courses.modules.dto.UpdateCourseDTO;
 import com.courses.api.crud_courses.modules.useCases.CreateCourseUseCase;
+import com.courses.api.crud_courses.modules.useCases.DeleteCourseUseCase;
 import com.courses.api.crud_courses.modules.useCases.ListCoursesUseCase;
 import com.courses.api.crud_courses.modules.useCases.UpdateCourseUseCase;
 
@@ -33,6 +35,9 @@ public class CoursesController {
 
     @Autowired
     private UpdateCourseUseCase updateCourseUseCase;
+
+    @Autowired
+    private DeleteCourseUseCase deleteCourseUseCase;
 
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CoursesEntity coursesEntity) {
@@ -66,4 +71,13 @@ public class CoursesController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable UUID id) {
+        try {
+            this.deleteCourseUseCase.execute(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
