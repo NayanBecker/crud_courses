@@ -19,6 +19,7 @@ import com.courses.api.crud_courses.modules.Entities.CoursesEntity;
 import com.courses.api.crud_courses.modules.dto.UpdateCourseDTO;
 import com.courses.api.crud_courses.modules.useCases.CreateCourseUseCase;
 import com.courses.api.crud_courses.modules.useCases.DeleteCourseUseCase;
+import com.courses.api.crud_courses.modules.useCases.GetCourseDetailsUseCase;
 import com.courses.api.crud_courses.modules.useCases.ListCoursesUseCase;
 import com.courses.api.crud_courses.modules.useCases.ToggleCourseStatusUseCase;
 import com.courses.api.crud_courses.modules.useCases.UpdateCourseUseCase;
@@ -43,6 +44,9 @@ public class CoursesController {
     
     @Autowired
     private ToggleCourseStatusUseCase toggleCourseStatusUseCase;
+
+    @Autowired
+    private GetCourseDetailsUseCase getCourseDetailsUseCase;
 
     @PostMapping("/")
     public ResponseEntity<Object> create(@Valid @RequestBody CoursesEntity coursesEntity) {
@@ -91,6 +95,15 @@ public class CoursesController {
         try {
             var updatedCourse = toggleCourseStatusUseCase.execute(id);
             return ResponseEntity.ok(updatedCourse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getDetails(@PathVariable UUID id) {
+        try {
+            var course = this.getCourseDetailsUseCase.execute(id);
+            return ResponseEntity.ok(course);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
