@@ -80,7 +80,7 @@ public class CoursesController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable UUID id) {
         try {
             this.deleteCourseUseCase.execute(id);
